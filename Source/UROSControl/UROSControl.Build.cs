@@ -51,6 +51,7 @@ public class UROSControl : ModuleRules
 				"zlib",
 				"Json",
 				"JsonUtilities",
+                "SDFAssetBuilder",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
