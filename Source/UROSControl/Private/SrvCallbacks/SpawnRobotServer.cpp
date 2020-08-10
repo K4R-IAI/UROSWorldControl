@@ -3,6 +3,8 @@
 
 #include "SpawnRobotServer.h"
 #include "SDFParser.h"
+#include "WorldControlGameInstance.h"
+#include "URModelBuilder.h"
 //#include "URoboSim/Classes/SDF/SDFDataAsset.h"
 
 
@@ -26,21 +28,18 @@ TSharedPtr<FROSBridgeSrv::SrvResponse> FROSSpawnRobotServer::Callback(TSharedPtr
     //NO check if we check and it fails the whole system gets shoot down
 
     //start spawning the robot
-    UE_LOG(LogTemp, Log, TEXT("Before creating SDF-Parser"));
     //get USDFModel
-    FSDFParser* parser =new FSDFParser(TEXT("/home/nleusmann/Documents/Sandbox/UE4_Environment/URoboSimExampleRobots/PR2/model.sdf")); // NewObject<FSDFParser>(TEXT("/home/nleusmann/Documents/Sandbox/UE4_Environment/URoboSimExampleRobots/PR2/model.sdf"));
-    UE_LOG(LogTemp, Log, TEXT("Created SDFParser"));
-    //parser->IsValidSDF("/home/nleusmann/Documents/Sandbox/UE4_Environment/URoboSimExampleRobots/PR2/model.sdf");
-    parser->LoadSDF("/home/nleusmann/Documents/Sandbox/UE4_Environment/URoboSimExampleRobots/PR2/model.sdf");
+    USDFParser* parser = NewObject<USDFParser>();
+    parser->LoadSDF(TEXT("/home/nleusmann/Documents/Sandbox/UE4_Environment/URoboSimExampleRobots/PR2/model.sdf"));
+    //FSDFParser* parser =new FSDFParser(TEXT("/home/nleusmann/Documents/Sandbox/UE4_Environment/URoboSimExampleRobots/PR2/model.sdf")); // NewObject<FSDFParser>(TEXT("/home/nleusmann/Documents/Sandbox/UE4_Environment/URoboSimExampleRobots/PR2/model.sdf"));
     UE_LOG(LogTemp, Log, TEXT("Loaded SDF-File"));
-//    EObjectFlags flags = RF_Transactional; // In USDFDataAssetFactory --> Flags |= RF_Transactional;
+    EObjectFlags flags = RF_Transactional; // In USDFDataAssetFactory --> Flags |= RF_Transactional;
 
-//    USDFDataAsset* dataAsset = parser->ParseToNewDataAsset(GetTransientPackage(),TEXT("PR2DataAsset"), flags);
+    USDFDataAsset* dataAsset = parser->ParseToNewDataAsset(GetTransientPackage(),TEXT("PR2DataAsset"), flags);
 
-//    UE_LOG(LogTemp, Log, TEXT("We have an dataAsset File"));
-    //parser->ParseToNewDataAsset()
+    UE_LOG(LogTemp, Log, TEXT("We have an dataAsset File"));
     //Create ARModelActor
     //plug everthing into the URMODELBuilder
-
+    URModelBuilder ModelBuilder= NewObject<URModelBuilder>();
     return MakeShareable<FROSBridgeSrv::SrvResponse>(new FROSRobotModelSrv::Response(/*Id,FinalActorName,ServiceSuccess*/));
 }

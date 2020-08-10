@@ -25,8 +25,13 @@ void UWorldControlGameInstance::OnStart()
     {
       UE_LOG(LogTemp, Error, TEXT("GameInstance: Handler not valid"));
     }
+  AssetRegistryModule=FModuleManager::Get().LoadModuleChecked<FAssetRegistryModule>(FName("AssetRegistry"));
 }
 
+FAssetRegistryModule& UWorldControlGameInstance::GetAssetRegistryModule()
+{
+    return AssetRegistryModule;
+}
 // void UWorldControlGameInstance::Tick(float DeltaTime)
 // {
 //   Super::Tick(DeltaTime);
